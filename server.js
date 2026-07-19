@@ -88,11 +88,9 @@ app.post("/login", loginLimiter, async (req, res, next) => {
 
 app.post("/signup", async (req, res, next) => {
   try {
-    // Validate username and password
     const { username, password } =
       signupSchema.parse(req.body)
 
-    // Check if username already exists
     const existingUser = fakeUsers.find(
       (user) => user.username === username
     )
@@ -103,28 +101,23 @@ app.post("/signup", async (req, res, next) => {
       throw err
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(
       password,
       12
     )
 
-    // Create new user
     const newUser = {
       username: username,
       password: hashedPassword
     }
 
-    // Add user to array
     fakeUsers.push(newUser)
 
-    // Save updated users to users.json
     fs.writeFileSync(
       "./users.json",
       JSON.stringify(fakeUsers, null, 2)
     )
 
-    // Send successful response
     res.status(201).json({
       message: "Account created successfully"
     })
