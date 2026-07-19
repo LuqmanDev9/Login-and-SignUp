@@ -1,1 +1,18 @@
+<<<<<<< HEAD
 []
+=======
+[
+  {
+    "username": "sam123",
+    "password": "$2b$12$E8aLZT1cNscyYlKcxsmqgO/..2mr62JbssfbgOF6XptQ5N1bwo/3e"
+  },
+  {
+    "username": "12345678",
+    "password": "$2b$12$MH7MusKWLFPwY4nI.TUEE.Db0JGzcaSJeSYUc4ynlZ9SnmRl4N1iK"
+  },
+  {
+    "username": "afridi69",
+    "password": "$2b$12$DO.Jh6nmX7oO0yz/0QBamO7d.u9BfTW7EFQpFNWBVanZmAbg11Uq."
+  }
+]
+>>>>>>> 953a86b (Update file)

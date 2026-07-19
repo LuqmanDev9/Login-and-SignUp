@@ -19,15 +19,13 @@ app.use(express.static("public"))
 app.use(helmet())
 app.use(cookieParser())
 
-const loginSchema = z.object({
+const authSchema = z.object({
   username: z.string().min(3).max(30),
-  password: z.string().min(8).max(100)
+  password: z.string().min(8).max(100),
 })
 
-const signupSchema = z.object({
-  username: z.string().min(3).max(30),
-  password: z.string().min(8).max(100)
-})
+const loginSchema = authSchema
+const signupSchema = authSchema
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -56,7 +54,7 @@ app.post("/login", loginLimiter, async (req, res, next) => {
     const matchPassword = await bcrypt.compare(password, user.password);
 
     if(!matchPassword) {
-      const err = new Error("Invalid username or password");
+      const err = new Error ("Invalid username or password");
       err.status = 401;
       throw err;
     };
