@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login & Sign Up</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #000;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      gap: 30px;
+
+      width: 90%;
+      max-width: 900px;
+    }
+
+    .box {
+      flex: 1;
+
+      background: #0d0d0d;
+
+      border: 1px solid rgba(94, 94, 94, 0.386);
+      border-radius: 12px;
+
+      padding: 40px;
+    }
+
+    h2 {
+      color: white;
+
+      margin-bottom: 25px;
+
+      font-size: 28px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      gap: 12px;
+    }
+
+    label {
+      color: #4da3ff;
+
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+
+      padding: 14px;
+      margin-bottom: 8px;
+
+      background: #151515;
+      color: white;
+
+      border: 1px solid #444;
+      border-radius: 7px;
+
+      font-size: 16px;
+
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #4da3ff;
+    }
+
+    button {
+      padding: 14px;
+
+      margin-top: 5px;
+
+      background: #2980d9;
+      color: white;
+
+      border: none;
+      border-radius: 7px;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #409cff;
+    }
+
+    .message {
+      margin-top: 15px;
+
+      color: white;
+
+      font-size: 14px;
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LOGIN BOX -->
+
+    <div class="box">
+
+      <h2>Login</h2>
+
+      <form id="loginForm">
+
+        <label for="login-username">
+          Username
+        </label>
+
+        <input
+          id="login-username"
+          type="text"
+          required
+        >
+
+        <label for="login-password">
+          Password
+        </label>
+
+        <input
+          id="login-password"
+          type="password"
+          required
+        >
+
+        <button type="submit">
+          Submit
+        </button>
+
+      </form>
+
+      <p
+        id="loginMessage"
+        class="message"
+      ></p>
+
+    </div>
+
+
+    <!-- SIGN UP BOX -->
+
+    <div class="box">
+
+      <h2>Sign Up</h2>
+
+      <form id="signupForm">
+
+        <label for="signup-username">
+          Username
+        </label>
+
+        <input
+          id="signup-username"
+          type="text"
+          required
+        >
+
+        <label for="signup-password">
+          Password
+        </label>
+
+        <input
+          id="signup-password"
+          type="password"
+          minlength="8"
+          required
+        >
+
+        <button type="submit">
+          Submit
+        </button>
+
+      </form>
+
+      <p
+        id="signupMessage"
+        class="message"
+      ></p>
+
+    </div>
+
+  </div>
+
+
+<script>
+  const loginForm = document.getElementById("loginForm");
+  const loginMessage = document.getElementById("loginMessage");
+
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const username = document.getElementById("login-username").value;
+    const password = document.getElementById("login-password").value;
+
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        loginMessage.textContent = data.error || "Login failed";
+        return;
+      }
+
+      loginMessage.textContent = data.message || "Login successful";
+
+    } catch (error) {
+      console.error(error);
+      loginMessage.textContent = "Something went wrong";
+    }
+  });
+
+
+  const signupForm = document.getElementById("signupForm");
+  const signupMessage = document.getElementById("signupMessage");
+
+  signupForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const username = document.getElementById("signup-username").value;
+    const password = document.getElementById("signup-password").value;
+
+    try {
+      const response = await fetch("/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        signupMessage.textContent = data.error || "Signup failed";
+        return;
+      }
+
+      signupMessage.textContent = data.message || "Account created successfully";
+      signupForm.reset();
+
+    } catch (error) {
+      console.error(error);
+      signupMessage.textContent = "Something went wrong";
+    }
+  });
+</script>
+
+</body>
+</html>
